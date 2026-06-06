@@ -10,7 +10,7 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 
 - If `scrollable` prop is enabled, then the (first) ScrollView occupies larger height for some reason, and doesn't even acknowledge the explicit `height` (had to resort to workarounds in my production app which is not present in this repro). This works fine on Android
 
-3. Minor:
+3. Drag Threshold issue (Android) (Minor):
 
 - Drag to close seems to have a higher threshold in Android after a scroll - sometimes i had to drag harder (Could be my nit pick).
 
