@@ -545,12 +545,14 @@ export const FilterModal = forwardRef<FilterModalHandle>((_, ref) => {
 		return null;
 	}
 
+	const scrollable = true;
+
 	return (
 		<BhBottomSheetModalLite
 			ref={sheetRef}
 			name="filter-modal-bug-repro"
 			detents={[1]}
-			scrollable
+			scrollable={scrollable}
 			title="Filters"
 			primaryCta={{ label: 'Apply', onPress: handleApply }}
 			secondaryCta={{ label: 'Reset', onPress: handleReset }}
@@ -563,7 +565,6 @@ export const FilterModal = forwardRef<FilterModalHandle>((_, ref) => {
 						height: maxContentHeight - headerHeight - footerHeight,
 						flexShrink: 1,
 						flexGrow: 0,
-						paddingBottom: headerHeight + footerHeight,
 					}}
 				>
 					<View
@@ -598,7 +599,7 @@ export const FilterModal = forwardRef<FilterModalHandle>((_, ref) => {
 							<TextInput
 								value={query}
 								editable={activeSection.searchable}
-								placeholder={`Search ${activeSection.label}`}
+								placeholder={`Scrollable ${scrollable}`}
 								placeholderTextColor={colors.slate500}
 								onChangeText={setQuery}
 								style={{
@@ -628,74 +629,52 @@ export const FilterModal = forwardRef<FilterModalHandle>((_, ref) => {
 
 					<View
 						style={{
+							flex: 1,
 							flexDirection: 'row',
 						}}
 					>
-						<View
-							style={{
-								width: '33%',
-								height:
-									maxContentHeight -
-									headerHeight -
-									searchBarHeight -
-									footerHeight,
+						<ScrollView
+							showsVerticalScrollIndicator={false}
+							contentContainerStyle={{
+								flexGrow: 1,
 							}}
 						>
-							<ScrollView
-								nestedScrollEnabled
-								showsVerticalScrollIndicator={false}
-								style={{
-									height:
-										maxContentHeight -
-										headerHeight -
-										footerHeight,
-								}}
-								contentContainerStyle={
-									{
-										// flex: 1,
-									}
-								}
-							>
-								{filterData.map((section) => {
-									const isActive =
-										section.id === selectedSection;
-									return (
-										<Pressable
-											key={section.id}
-											onPress={() =>
-												handleSectionChange(section.id)
-											}
+							{filterData.map((section) => {
+								const isActive = section.id === selectedSection;
+								return (
+									<Pressable
+										key={section.id}
+										onPress={() =>
+											handleSectionChange(section.id)
+										}
+										style={{
+											height: 40,
+											justifyContent: 'center',
+											paddingHorizontal: spacing[8],
+											backgroundColor: isActive
+												? colors.background
+												: colors.slate100,
+											borderLeftWidth: isActive ? 3 : 0,
+											borderLeftColor: colors.primary,
+										}}
+									>
+										<Text
 											style={{
-												height: 40,
-												justifyContent: 'center',
-												paddingHorizontal: spacing[8],
-												backgroundColor: isActive
-													? colors.background
-													: colors.slate100,
-												borderLeftWidth: isActive
-													? 3
-													: 0,
-												borderLeftColor: colors.primary,
+												fontSize: fontSize.xs,
+												fontWeight: isActive
+													? '600'
+													: '500',
+												color: isActive
+													? colors.primary
+													: colors.onSurface,
 											}}
 										>
-											<Text
-												style={{
-													fontSize: fontSize.xs,
-													fontWeight: isActive
-														? '600'
-														: '500',
-													color: isActive
-														? colors.primary
-														: colors.onSurface,
-												}}
-											>
-												{section.label}
-											</Text>
-										</Pressable>
-									);
-								})}
-							</ScrollView>
-						</View>
+											{section.label}
+										</Text>
+									</Pressable>
+								);
+							})}
+						</ScrollView>
 
 						<FlatList
 							data={finalList}
