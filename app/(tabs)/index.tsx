@@ -1,98 +1,75 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { useRef } from 'react';
+import { Pressable, StatusBar, StyleSheet, Text, View } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+import { FilterModal, FilterModalHandle } from '@/components/FilterModal';
 
 export default function HomeScreen() {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
-
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
-  );
+	const sheetRef = useRef<FilterModalHandle>(null);
+	return (
+		<SafeAreaProvider>
+			<GestureHandlerRootView style={{ flex: 1 }}>
+				<StatusBar barStyle="dark-content" />
+				<SafeAreaView style={styles.container}>
+					<View style={styles.card}>
+						<Text style={styles.title}>Filter Modal</Text>
+						<Text style={styles.subtitle}>
+							BhBottomSheetModal + TrueSheet, with two nested
+							scrollables inside (a ScrollView on the left rail
+							and a FlatList on the right).
+						</Text>
+						<Pressable
+							onPress={() => sheetRef.current?.present()}
+							style={({ pressed }) => [
+								styles.button,
+								{ opacity: pressed ? 0.7 : 1 },
+							]}
+						>
+							<Text style={styles.buttonText}>Open filter</Text>
+						</Pressable>
+					</View>
+					<FilterModal ref={sheetRef} />
+				</SafeAreaView>
+			</GestureHandlerRootView>
+		</SafeAreaProvider>
+	);
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
+	container: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+		padding: 24,
+		backgroundColor: '#F8FAFC',
+	},
+	card: {
+		alignItems: 'center',
+		gap: 12,
+	},
+	title: {
+		fontSize: 22,
+		fontWeight: '700',
+		color: '#0F172A',
+		textAlign: 'center',
+	},
+	subtitle: {
+		fontSize: 14,
+		color: '#475569',
+		textAlign: 'center',
+		maxWidth: 320,
+	},
+	button: {
+		marginTop: 8,
+		paddingHorizontal: 24,
+		paddingVertical: 12,
+		backgroundColor: '#4338CA',
+		borderRadius: 8,
+	},
+	buttonText: {
+		color: '#FFFFFF',
+		fontSize: 16,
+		fontWeight: '600',
+	},
 });
