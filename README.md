@@ -4,11 +4,15 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 
 1. Multiple Scroll View issue (Android):
 
-- When there are 2 Scrollables (Scrollview or Flatlist) present in a Truesheet, only the first ScrollView is scrollable, the second scrollview doesnt scroll at all (this is despite `scrollable` prop enabled). Works perfectly in iOS
+- When there are 2 scrollables (`ScrollView` or `Flatlist`) present in a Truesheet, only the first scrollView is scrollable, the second scrollview doesn't scroll at all (this is despite `scrollable` prop enabled, and doesn't seem to work even with the prop disabled). Works perfectly in iOS
 
 2. ScrollView Height issue (iOS):
 
-- If `scrollable` prop is enabled, then the (first) ScrollView occupies larger height for some reason, and doesnt even acknowleged the explicit `height` (had to resort to workarounds in my production app which is not present in this repro). This works fine on Android
+- If `scrollable` prop is enabled, then the (first) ScrollView occupies larger height for some reason, and doesn't even acknowledge the explicit `height` (had to resort to workarounds in my production app which is not present in this repro). This works fine on Android
+
+3. Minor:
+
+- Drag to close seems to have a higher threshold in Android after a scroll - sometimes i had to drag harder (Could be my nit pick).
 
 ## Get started
 
