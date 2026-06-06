@@ -644,6 +644,12 @@ export const FilterModal = forwardRef<FilterModalHandle>((_, ref) => {
 							<ScrollView
 								nestedScrollEnabled
 								showsVerticalScrollIndicator={false}
+								style={{
+									height:
+										maxContentHeight -
+										headerHeight -
+										footerHeight,
+								}}
 								contentContainerStyle={
 									{
 										// flex: 1,
